@@ -8,3 +8,7 @@ app.listen(8080, function(){
 app.get('/pet', function(요청, 응답){
     응답.send('펫용품 쇼핑을 할 수 있는 페이지입니다.');
 });
+
+app.get('/', function(요청, 응답){
+    응답.sendFile(__dirname + '/index.html');
+});
