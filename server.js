@@ -22,3 +22,10 @@ app.get('/topic', function (req, res) {
     let topic = ['안녕','하세요','반갑습니다']
     res.send(topic[req.query.id]);
 })
+
+
+app.use('/user/:id', function (req, res, next) {
+    console.log('Request Type:', req.method);
+    next();
+  });
+  
