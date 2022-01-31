@@ -1,19 +1,28 @@
+// ENV
 require('dotenv').config();
+// DEPENDENCIES
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const app = express();
+const port = process.env.PORT || 4500;
 
-const { PORT, MONGO_URI } = process.env;
-
+// Static File Service
 app.use(express.static('public'));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// Body-parser
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-// CONNECT TO MONGODB SERVER
-mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+// Node의 native Promise 사용
+mongoose.Promise = global.Promise;
+
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URI, { useMongoClient: true })
   .then(() => console.log('Successfully connected to mongodb'))
   .catch(e => console.error(e));
 
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+// ROUTERS
+app.use('/todos', require('./routes/todos'));
+
+app.listen(port, () => console.log(`Server listening on port ${port}`));
